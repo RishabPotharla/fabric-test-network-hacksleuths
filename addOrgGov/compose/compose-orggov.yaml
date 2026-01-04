@@ -1,0 +1,70 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+volumes:
+  peer0.orggov.example.com:
+
+networks:
+  test:
+    name: fabric_test
+
+services:
+
+  peer0.orggov.example.com:
+    container_name: peer0.orggov.example.com
+    image: hyperledger/fabric-peer:latest
+    labels:
+      service: hyperledger-fabric
+
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/peercfg
+
+      # Logging
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+
+      # TLS
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+
+      # Peer identity
+      - CORE_PEER_ID=peer0.orggov.example.com
+      - CORE_PEER_ADDRESS=peer0.orggov.example.com:15051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:15051
+
+      # Chaincode
+      - CORE_PEER_CHAINCODEADDRESS=peer0.orggov.example.com:15052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:15052
+      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+
+      # Gossip
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orggov.example.com:15051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orggov.example.com:15051
+
+      # MSP
+      - CORE_PEER_LOCALMSPID=OrgGovMSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
+
+      # Metrics
+      - CORE_METRICS_PROVIDER=prometheus
+
+      # Chaincode-as-a-service
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0orggov"}
+
+    volumes:
+      - ../../organizations/peerOrganizations/orggov.example.com/peers/peer0.orggov.example.com:/etc/hyperledger/fabric
+      - peer0.orggov.example.com:/var/hyperledger/production
+
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+
+    ports:
+      - 15051:15051
+
+    networks:
+      - test
