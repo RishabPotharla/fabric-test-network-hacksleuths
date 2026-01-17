@@ -38,7 +38,6 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org4.example.com:12051
 
       - CORE_METRICS_PROVIDER=prometheus
-      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
 
     volumes:
       - ../../organizations/peerOrganizations/org4.example.com/peers/peer0.org4.example.com:/etc/hyperledger/fabric
