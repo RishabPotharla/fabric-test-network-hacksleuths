@@ -1,19 +1,38 @@
-/channel-artifacts/*.tx
-/channel-artifacts/*.block
-/ledgers
-/ledgers-backup
-/channel-artifacts/*.json
-/channel-artifacts/*.pb
-/org3-artifacts/crypto-config/*
-organizations/fabric-ca/ordererOrg/*
-organizations/fabric-ca/org1/*
-organizations/fabric-ca/org2/*
-addOrg3/fabric-ca/org3/*
-organizations/ordererOrganizations/*
-organizations/peerOrganizations/*
-system-genesis-block/*
+# -------------------------------
+# Hyperledger Fabric artifacts
+# -------------------------------
+
+# Channel artifacts
+channel-artifacts/
+system-genesis-block/
+
+# Ledgers
+ledgers/
+ledgers-backup/
+
+# Chaincode packages
 *.tar.gz
-# Fabric CA private keys (NEVER commit)
-**/fabric-ca/**/keystore/*
-**/fabric-ca/**/msp/keystore/*
+
+# -------------------------------
+# Crypto & MSP (NEVER COMMIT)
+# -------------------------------
+
+organizations/
+**/crypto-config/**
+**/fabric-ca/**
+
+# Explicit CA keystores (belt + suspenders)
+**/keystore/*
+**/*_sk
+
+# -------------------------------
+# CouchDB / runtime data
+# -------------------------------
+**/couchdb*
+**/wallet*
+
+# -------------------------------
+# Logs
+# -------------------------------
+*.log
 log.txt
